@@ -1,0 +1,31 @@
+@import "../../colors.scss";
+
+.Messages {
+  padding: 1em;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  overflow-y: auto;
+}
+
+.Message {
+  background-color: $c-background-light;
+  padding: 0.7em;
+  border-radius: 1em;
+  width: fit-content;
+
+  > span {
+    display: block;
+    opacity: 0.6;
+    font-weight: bolder;
+    font-size: 0.9em;
+  }
+}
+
+.SelfMessage {
+  @extend .Message;
+  background-color: $c-accent;
+  margin-left: auto;
+}

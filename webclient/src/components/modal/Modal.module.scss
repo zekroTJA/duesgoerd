@@ -1,0 +1,19 @@
+@import "../../colors.scss";
+
+.Modal {
+  display: flex;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0 0 0 / 50%);
+  align-items: center;
+  justify-content: center;
+
+  > div {
+    width: 90%;
+    max-width: 40em;
+    padding: 1em;
+    border-radius: 1em;
+    background-color: $c-background;
+  }
+}

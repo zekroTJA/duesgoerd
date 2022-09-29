@@ -1,0 +1,15 @@
+@import "../../colors.scss";
+
+.Footer {
+  padding: 1em;
+  display: flex;
+  gap: 1em;
+
+  > button {
+    padding: 0.2em 1em 0 0.7em;
+
+    > img {
+      transform: rotate(45deg);
+    }
+  }
+}
