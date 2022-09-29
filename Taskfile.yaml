@@ -1,0 +1,40 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - echo "hello"
+    silent: true
+
+  build-server:
+    dir: server
+    cmds: 
+      - cargo build --release
+  
+  run-server:
+    dir: server
+    env:
+      RUST_LOG: trace
+    cmds:
+      - cargo run
+  
+  run:
+    cmds:
+      - task: run-server
+        
+  deps-web:
+    dir: webclient
+    sources:
+      - "package.json"
+      - "yarn.lock"
+    cmds:
+      - yarn
+  
+  run-web:
+    dir: webclient
+    deps:
+      - deps-web
+    cmds:
+      - yarn start
