@@ -24,7 +24,7 @@ const App: Component = () => {
   const [error, setError] = createSignal<Error>();
 
   const { send, observer } = init(
-    import.meta.env.SERVER_URL ?? "ws://localhost:8080"
+    import.meta.env.VITE_SERVER_ADDRESS ?? "ws://localhost:8080"
   );
 
   const login = () => {
