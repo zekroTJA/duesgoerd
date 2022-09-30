@@ -1,0 +1,44 @@
+name: Pages Deploy
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "webclient/**"
+      - ".github/workflows/pages-deployment.yml"
+  workflow_dispatch:
+
+jobs:
+  pages:
+    name: Deploy to Pages
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "18.x"
+
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        working-directory: webclient
+        run: yarn
+
+      - name: Build Static Content
+        working-directory: webclient
+        env:
+          VITE_SERVER_ADDRESS: "wss://duesgoerd.herokuapp.com"
+        run: yarn run build
+
+      - name: Mirror index.html to 404.html
+        working-directory: webapp
+        run: cp dist/index.html dist/404.html
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: webclient/dist
+          cname: duesgoerd.zekro.de
