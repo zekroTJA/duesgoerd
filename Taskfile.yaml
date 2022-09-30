@@ -17,6 +17,8 @@ tasks:
     dir: server
     env:
       RUST_LOG: trace
+      DG_BINDADDRESS: 127.0.0.1:8080
+      DG_ALLOWEDORIGINS: "*"
     cmds:
       - cargo run
   
