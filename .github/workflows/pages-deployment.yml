@@ -33,7 +33,7 @@ jobs:
         run: yarn run build
 
       - name: Mirror index.html to 404.html
-        working-directory: webapp
+        working-directory: webclient
         run: cp dist/index.html dist/404.html
 
       - name: Deploy
