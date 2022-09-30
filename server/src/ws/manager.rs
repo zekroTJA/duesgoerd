@@ -128,7 +128,7 @@ impl Manager {
                     .message;
                 let message = message.trim();
                 if message.is_empty() {
-                    client.send(&ErrorCode::NotJoined.into()).await?;
+                    client.send(&ErrorCode::EmptyMessage.into()).await?;
                     return Ok(());
                 }
                 self.broadcast(
