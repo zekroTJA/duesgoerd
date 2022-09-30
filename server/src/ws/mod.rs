@@ -23,8 +23,13 @@ use futures::prelude::*;
 use log::{debug, error, info};
 use std::sync::Arc;
 
-async fn accept_connection(manager: Arc<Manager>, peer: SocketAddr, stream: TcpStream) {
-    if let Err(e) = handle_connection(&manager, peer, stream).await {
+async fn accept_connection(
+    manager: Arc<Manager>,
+    allowed_origins: String,
+    peer: SocketAddr,
+    stream: TcpStream,
+) {
+    if let Err(e) = handle_connection(&manager, &allowed_origins, peer, stream).await {
         match e {
             err if e.is::<tungstenite::Error>() => {
                 match err.downcast_ref::<tungstenite::Error>().unwrap() {
@@ -45,13 +50,17 @@ async fn accept_connection(manager: Arc<Manager>, peer: SocketAddr, stream: TcpS
 
 async fn handle_connection(
     manager: &Manager,
+    allowed_origins: &str,
     peer: SocketAddr,
     stream: TcpStream,
 ) -> anyhow::Result<()> {
     let (ws_sender, mut ws_receiver) =
         accept_hdr_async(stream, |_: &Request, mut res: Response| {
             let headers = res.headers_mut();
-            headers.insert(ACCESS_CONTROL_ALLOW_ORIGIN, "*".parse().unwrap());
+            headers.insert(
+                ACCESS_CONTROL_ALLOW_ORIGIN,
+                allowed_origins.parse().unwrap(),
+            );
             headers.insert(ACCESS_CONTROL_ALLOW_HEADERS, "*".parse().unwrap());
             headers.insert(ACCESS_CONTROL_ALLOW_METHODS, "*".parse().unwrap());
             Ok(res)
@@ -78,7 +87,7 @@ async fn handle_connection(
     Ok(())
 }
 
-pub async fn run(addr: &str) -> anyhow::Result<()> {
+pub async fn run(addr: &str, allowed_origins: &str) -> anyhow::Result<()> {
     let listener = TcpListener::bind(&addr).await?;
     info!("Listening on: {}", addr);
 
@@ -95,7 +104,8 @@ pub async fn run(addr: &str) -> anyhow::Result<()> {
         info!("Peer address: {}", peer);
 
         let manager = manager.clone();
-        async_std::task::spawn(accept_connection(manager, peer, stream));
+        let allowed_origins = String::from(allowed_origins);
+        async_std::task::spawn(accept_connection(manager, allowed_origins, peer, stream));
     }
 
     Ok(())
