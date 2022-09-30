@@ -7,7 +7,7 @@ use async_std::{
 use async_tungstenite::tungstenite::Message;
 use log::debug;
 use serde::Serialize;
-use std::{collections::HashMap, sync::Arc, time::Duration};
+use std::{collections::HashMap, net::IpAddr, sync::Arc, time::Duration};
 
 const CLEANUP_INTERVAL: Duration = Duration::from_secs(5 * 60);
 const RATELIMIT_CAP: u32 = 10;
@@ -15,7 +15,7 @@ const RATELIMIT_DURATION: Duration = Duration::from_secs(5);
 
 pub struct Manager {
     clients: RwLock<HashMap<SocketAddr, Client>>,
-    limiter: Arc<Limiter<SocketAddr>>,
+    limiter: Arc<Limiter<IpAddr>>,
 }
 
 impl Manager {
@@ -76,7 +76,7 @@ impl Manager {
         }
         let client = client.unwrap();
 
-        if !self.limiter.take(peer).await {
+        if !self.limiter.take(peer.ip()).await {
             client.send(&ErrorCode::RateLimitExceeded.into()).await?;
             return Ok(());
         }
