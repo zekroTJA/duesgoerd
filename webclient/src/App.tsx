@@ -15,7 +15,6 @@ import {
 import { Messages } from "./components/messages/Messages";
 import { init } from "./api/ws";
 import { Modal } from "./components/modal/Modal";
-import { catchError, of } from "rxjs";
 
 const App: Component = () => {
   const [newMsg, setNewMsg] = createSignal("");
@@ -24,7 +23,9 @@ const App: Component = () => {
   const [messages, setMessages] = createSignal<Message[]>([]);
   const [error, setError] = createSignal<Error>();
 
-  const { send, observer } = init("ws://localhost:8080");
+  const { send, observer } = init(
+    import.meta.env.SERVER_URL ?? "ws://localhost:8080"
+  );
 
   const login = () => {
     const display_name = displayNameInpt();
