@@ -54,6 +54,7 @@ button {
   border-radius: 100px;
   cursor: pointer;
   transition: all 0.2s ease;
+  color: $c-text;
 
   &:disabled {
     background-color: $c-background-light;

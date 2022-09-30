@@ -10,14 +10,19 @@ type Props = {
 export const Footer: Component<Props> = (props) => {
   const merged = mergeProps({ onChange: () => {}, onSend: () => {} }, props);
 
+  const send = () => {
+    if (!merged.value) return;
+    merged.onSend();
+  };
+
   return (
     <div class={styles.Footer}>
       <input
         value={merged.value}
         onInput={(e) => merged.onValueChange(e.currentTarget.value)}
-        onKeyPress={(e) => e.key == "Enter" && merged.onSend()}
+        onKeyPress={(e) => e.key == "Enter" && send()}
       />
-      <button disabled={!merged.value} onclick={() => merged.onSend()}>
+      <button disabled={!merged.value} onclick={() => send()}>
         <img src="src/assets/send.svg" />
       </button>
     </div>

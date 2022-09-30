@@ -8,11 +8,7 @@ export const init = (addr: string) => {
     ws.onmessage = (e) => {
       const event = JSON.parse(e.data) as Event;
       if (!event.code) return;
-      if (event.code == EventCode.Error) {
-        subscriber.error(event);
-      } else {
-        subscriber.next(event);
-      }
+      subscriber.next(event);
     };
   });
 

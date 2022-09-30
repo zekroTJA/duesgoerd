@@ -17,3 +17,11 @@
     background-color: $c-background;
   }
 }
+
+.ErrorModal {
+  @extend .Modal;
+
+  > div {
+    background-color: $c-red;
+  }
+}
