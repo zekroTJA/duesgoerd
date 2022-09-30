@@ -1,8 +1,8 @@
 FROM rust:slim AS build
 WORKDIR /build
-COPY src src
-COPY Cargo.lock .
-COPY Cargo.toml .
+COPY server/src src
+COPY server/Cargo.lock .
+COPY server/Cargo.toml .
 RUN cargo build --release
 
 FROM debian:11-slim AS release
