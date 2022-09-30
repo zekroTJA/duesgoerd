@@ -1,5 +1,6 @@
 import styles from "./Footer.module.scss";
 import { Component, mergeProps } from "solid-js";
+import Send from "../../assets/send.svg";
 
 type Props = {
   value: string;
@@ -23,7 +24,7 @@ export const Footer: Component<Props> = (props) => {
         onKeyPress={(e) => e.key == "Enter" && send()}
       />
       <button disabled={!merged.value} onclick={() => send()}>
-        <img src="src/assets/send.svg" />
+        <img src={Send} />
       </button>
     </div>
   );

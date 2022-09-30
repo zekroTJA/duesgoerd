@@ -1,5 +1,4 @@
 import { Component, createEffect, createSignal, Show } from "solid-js";
-
 import styles from "./App.module.scss";
 import { Footer } from "./components/footer/Footer";
 import {
@@ -15,6 +14,7 @@ import {
 import { Messages } from "./components/messages/Messages";
 import { init } from "./api/ws";
 import { Modal } from "./components/modal/Modal";
+import Arrow from "./assets/arrow.svg";
 
 const App: Component = () => {
   const [newMsg, setNewMsg] = createSignal("");
@@ -120,7 +120,7 @@ const App: Component = () => {
                 onInput={(e) => setDisplayNameInpt(e.currentTarget.value)}
               />
               <button disabled={!displayNameInpt()} onclick={() => login()}>
-                <img src="src/assets/arrow.svg" />
+                <img src={Arrow} />
               </button>
             </div>
           </div>
